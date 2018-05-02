@@ -24,7 +24,7 @@ class Baum<T extends Comparable<T>> {
 
 		Element it = root;
 		while (it != null) {
-			int c = it.value.compareTo(value);
+			int c = value.compareTo(it.value);
 
 			if (c == 0)
 				return;
@@ -50,8 +50,33 @@ class Baum<T extends Comparable<T>> {
 	 *  Wie `add`, aber rekursiv zu implementieren.
 	 */
 	void addRek(T value) {
-		throw new UnsupportedOperationException();
+        if (root == null) {
+            root = new Element(value);
+            return;
+        }
+
+        Element it = root;
+        addRek(value, it);
 	}
+
+    void addRek(T value, Element it) {
+        int c = it.value.compareTo(value);
+        if (c == 0) {
+            return;
+        } else if (c > 0) {
+            if (it.left == null) {
+                it.left = new Element(value);
+                return;
+            }
+            addRek(value, it.left);
+        } else {
+            if (it.right == null) {
+                it.right = new Element(value);
+                return;
+            }
+            addRek(value, it.right);
+        }
+    }
 
 	/**
 	 * Gibt `true` zurück, wenn der Wert `value` im Baum enthalten ist.
@@ -62,7 +87,7 @@ class Baum<T extends Comparable<T>> {
 
 		Element it = root;
 		while (it != null) {
-			int c = it.value.compareTo(value);
+			int c = value.compareTo(it.value);
 			if (c == 0)
 				return true;
 			else if (c < 0)
@@ -78,8 +103,26 @@ class Baum<T extends Comparable<T>> {
 	 * Wie `contains`, aber rekursiv zu implementieren.
 	 */
 	boolean containsRek(T value) {
-		throw new UnsupportedOperationException();
+        if (root == null)
+            return false;
+
+        Element it = root;
+        return containsRek(value, it);
 	}
+
+    boolean containsRek(T value, Element it) {
+        if (it == null) {
+            return false;
+        }
+	    int c = value.compareTo(it.value);
+        if (c == 0)
+            return true;
+        else if (c < 0)
+            return containsRek(value, it.left);
+        else
+            return containsRek(value, it.right);
+    }
+
 
 	/**
 	 * Gibt eine Stringrepraesentation des Baums zurück, wobei das Format

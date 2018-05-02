@@ -29,8 +29,22 @@ class Liste<T> {
 	 * Wie `add`, aber rekursiv zu implementieren.
 	 */
 	void addRek(T value) {
-		throw new UnsupportedOperationException();
+        if (first == null) {
+            first = new Element(value);
+            return;
+        }
+        Element it = first;
+        addRek(value, it);
 	}
+
+    void addRek(T value, Element it) {
+	    if (it.next == null) {
+	        it.next = new Element(value);
+        } else {
+	        it = it.next;
+            addRek(value, it);
+        }
+    }
 
 	/**
 	 * Gibt `true` zurück, wenn der Wert `value` in der Liste enthalten ist.
@@ -53,8 +67,24 @@ class Liste<T> {
 	 * Wie `contains`, nur rekursiv zu implementieren.
 	 */
 	boolean containsRek(T value) {
-		throw new UnsupportedOperationException();
+        if (first == null)
+            return false;
+        Element it = first;
+
+        return containsRek(value, it);
 	}
+
+    boolean containsRek(T value, Element it) {
+        if (it.value == value) {
+            return true;
+        } else if (it.next == null) {
+	        return false;
+        } else {
+	        return containsRek(value, it.next);
+        }
+    }
+
+
 
 	/**
 	 * Gibt eine Stringrepraesentation der Liste zurück, z.B. [] oder [1, 2, 3]
@@ -64,7 +94,7 @@ class Liste<T> {
 			return "[]";
 
 		StringBuilder sb = new StringBuilder();
-		sb.append(first.value);
+		sb.append("[").append(first.value);
 
 		Element it = first.next;
 		while (it != null) {
@@ -72,13 +102,23 @@ class Liste<T> {
 			it = it.next;
 		}
 
-		return sb.toString();
+		return sb.append("]").toString();
 	}
 
 	/**
 	 * Zusatzaufgabe: Wie `toString`, nur rekursiv zu implementieren.
 	 */
 	String toStringRek() {
-		throw new UnsupportedOperationException();
+        //Noch nicht fertig...
+	    if (first == null)
+            return "[]";
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("[").append(first.value);
+
+        Element it = first.next;
+
+        return sb.toString();
 	}
+
 }
